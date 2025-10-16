@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ asset.name }} - Zimmet Bilgisi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 480px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0078d7, #00bcff);
+        }
+        
+        .asset-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .asset-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .asset-name {
+            font-size: 1.7rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .asset-tag {
+            color: #7f8c8d;
+            font-size: 1rem;
+            background: #f8f9fa;
+            padding: 6px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            border: 1px solid #e9ecef;
+        }
+        
+        .info-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #ecf0f1;
+            transition: background-color 0.2s ease;
+        }
+        
+        .info-item:hover {
+            background-color: #f8f9fa;
+            margin: 0 -10px;
+            padding: 14px 10px;
+            border-radius: 8px;
+            border-bottom: 1px solid transparent;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #34495e;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-value {
+            color: #2c3e50;
+            font-weight: 500;
+            flex: 2;
+            text-align: right;
+        }
+        
+        .status-badge {
+            padding: 14px 28px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .status-active {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            color: white;
+        }
+        
+        .status-inactive {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+        }
+        
+        .status-maintenance {
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
+        }
+        
+        .serial-number {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .type-badge {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+        
+        .last-updated {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #95a5a6;
+            border-top: 1px solid #ecf0f1;
+            padding-top: 15px;
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                padding: 20px 15px;
+                border-radius: 15px;
+            }
+            
+            .asset-name {
+                font-size: 1.4rem;
+            }
+            
+            .asset-icon {
+                font-size: 3rem;
+            }
+            
+            .info-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .info-value {
+                text-align: left;
+                width: 100%;
+                padding-left: 25px;
+            }
+            
+            .status-badge {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="asset-header">
+            <div class="asset-icon">
+                {% if asset.type and 'laptop' in asset.type.lower() %} 💻
+                {% elif asset.type and 'mobile' in asset.type.lower() %} 📱
+                {% elif asset.type and 'monitor' in asset.type.lower() %} 🖥️
+                {% elif asset.type and 'mouse' in asset.type.lower() %} 🖱️
+                {% elif asset.type and 'keyboard' in asset.type.lower() %} ⌨️
+                {% elif asset.type and 'tablet' in asset.type.lower() %} 📟
+                {% elif asset.type and 'printer' in asset.type.lower() %} 🖨️
+                {% else %} 📦
+                {% endif %}
+            </div>
+            <h1 class="asset-name">{{ asset.name }}</h1>
+            <div class="asset-tag">{{ asset.tag }}</div>
+            {% if asset.type %}
+            <div class="type-badge">{{ asset.type }}</div>
+            {% endif %}
+        </div>
+        
+        {% if asset.serial %}
+        <div class="serial-number">
+            🔢 Seri Numarası: {{ asset.serial }}
+        </div>
+        {% endif %}
+        
+        <div class="info-grid">
+            {% if asset.full_name %}
+            <div class="info-item">
+                <span class="info-label">👤 Zimmetli Kişi</span>
+                <span class="info-value">{{ asset.full_name }}</span>
+            </div>
+            {% endif %}
+            
+            {% if asset.department %}
+            <div class="info-item">
+                <span class="info-label">🏢 Departman</span>
+                <span class="info-value">{{ asset.department }}</span>
+            </div>
+            {% endif %}
+            
+            {% if asset.employee_id %}
+            <div class="info-item">
+                <span class="info-label">🆔 Çalışan Sicil No</span>
+                <span class="info-value">{{ asset.employee_id }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="status-badge 
+            {% if asset.status == 'active' or asset.status == 'Aktif' %}status-active
+            {% elif asset.status == 'maintenance' or asset.status == 'Bakım' %}status-maintenance
+            {% else %}status-inactive
+            {% endif %}">
+            
+            {% if asset.status == 'active' or asset.status == 'Aktif' %} 
+                ✅ Zimmet Aktif
+            {% elif asset.status == 'maintenance' or asset.status == 'Bakım' %}
+                🔧 Bakım Modunda
+            {% else %}
+                ❌ Zimmet Pasif
+            {% endif %}
+        </div>
+        
+        <div class="last-updated" id="lastUpdated">
+            📍 KOE Inventory System • Yükleniyor...
+        </div>
+    </div>
+
+    <script>
+        // Tarih ve saat güncellemesi
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const dateTimeString = now.toLocaleDateString('tr-TR', options);
+            document.getElementById('lastUpdated').innerHTML = 
+                `📍 KOE Inventory System • ${dateTimeString}`;
+        }
+        
+        // Sayfa yüklendiğinde ve her dakika güncelle
+        updateDateTime();
+        setInterval(updateDateTime, 60000);
+    </script>
+</body>
+</html>
