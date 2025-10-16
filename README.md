@@ -1,6 +1,9 @@
 # 🏷️ KOE Inventory Management System
 
-Python Flask MySQL QR-Code
+![Python](https://img.shields.io/badge/Python-3.8+-blue)
+![Flask](https://img.shields.io/badge/Flask-2.2.2-green) 
+![MySQL](https://img.shields.io/badge/MySQL-8.0+-orange)
+![QR Code](https://img.shields.io/badge/QR--Code-Generator-yellow)
 
 A modern QR-code based asset tracking system that allows quick access to equipment information by scanning QR codes with mobile devices.
 
