@@ -36,8 +36,5 @@ dist/
 # Database
 *.db
 
-# QR kod projesine özel - üretilen geçici QR dosyaları
+# qr image
 qrs/
-*.png
-*.jpg
-*.jpeg
